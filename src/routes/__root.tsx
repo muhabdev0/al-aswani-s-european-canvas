@@ -11,6 +11,10 @@ import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
+import { LanguageProvider } from "@/i18n/LanguageProvider";
+import { Header } from "@/components/Header";
+import { Footer } from "@/components/Footer";
+import { FloatingWhatsApp } from "@/components/WhatsAppButton";
 
 function NotFoundComponent() {
   return (
@@ -77,19 +81,32 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { title: "Al-Aswani — Travel & Transportation in Europe" },
+      {
+        name: "description",
+        content:
+          "Refined travel and chauffeur services across Europe, with Arabic-speaking drivers. Based in the Netherlands.",
+      },
+      { name: "author", content: "Al-Aswani" },
+      { property: "og:title", content: "Al-Aswani — Travel & Transportation in Europe" },
+      {
+        property: "og:description",
+        content:
+          "Refined travel and chauffeur services across Europe, with Arabic-speaking drivers.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
-      { name: "twitter:site", content: "@Lovable" },
     ],
     links: [
       {
         rel: "stylesheet",
         href: appCss,
+      },
+      { rel: "preconnect", href: "https://fonts.googleapis.com" },
+      { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
+      {
+        rel: "stylesheet",
+        href: "https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500&family=Inter:wght@300;400;500;600&family=Tajawal:wght@300;400;500;700&family=Amiri:wght@400;700&display=swap",
       },
     ],
   }),
@@ -101,7 +118,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 
 function RootShell({ children }: { children: ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="ar" dir="rtl">
       <head>
         <HeadContent />
       </head>
@@ -118,8 +135,16 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-      <Outlet />
+      <LanguageProvider>
+        <div className="relative min-h-screen overflow-x-hidden bg-paper text-ink">
+          <Header />
+          <main>
+            <Outlet />
+          </main>
+          <Footer />
+          <FloatingWhatsApp />
+        </div>
+      </LanguageProvider>
     </QueryClientProvider>
   );
 }
